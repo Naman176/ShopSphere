@@ -1,0 +1,29 @@
+@use "./adminStyles/mixin" as *;
+
+.home {
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 4rem);
+  width: 100%;
+
+  > h1 {
+    @include heading(1px);
+    @include flex(row, space-between, center);
+    > .findMore {
+      font-size: 1.2rem;
+    }
+  }
+
+  > main {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
