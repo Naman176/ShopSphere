@@ -1,0 +1,61 @@
+@use "./adminStyles/mixin" as *;
+@use "colors" as *;
+
+.shipping {
+  @include flex;
+
+  .backBtn {
+    @include flex;
+    @include square(2.5rem);
+    background-color: $color2;
+    color: $color1;
+    position: fixed;
+    top: 5rem;
+    left: 2rem;
+    border-radius: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.384);
+
+    svg {
+      transition: all 0.3s;
+    }
+
+    &:hover svg {
+      translate: -0.25rem;
+    }
+  }
+
+  > form {
+    max-width: 450px;
+    width: 100%;
+    @include flex(column, center, stretch, 2rem);
+    // padding: 2rem;
+
+    > h1 {
+      @include heading(2px);
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    > input,
+    > select {
+      padding: 1rem;
+      outline: none;
+      border: 1px solid rgba(31, 31, 31, 0.351);
+      border-radius: 5px;
+      font-size: 1.05rem;
+    }
+
+    > button {
+      @include btn(1rem, $color3, $color1, 5px, 1.05rem);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}

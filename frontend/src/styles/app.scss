@@ -3,6 +3,10 @@
 
 @use "home";
 @use "productCard";
+@use "cart";
+@use "shipping";
+@use "login";
+@use "search";
 
 @use "./adminStyles/dashboard";
 @use "./adminStyles/products";
@@ -41,6 +45,25 @@ a {
 
 .green {
   color: rgb(0, 195, 0);
+}
+
+.heading {
+  @include heading;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.container {
+  max-width: 1367px;
+  width: 100%;
+  margin: auto;
+  overflow: auto;
+
+  > h1 {
+    @include heading;
+    margin: 1rem 0;
+    text-align: left;
+  }
 }
 
 .header {
