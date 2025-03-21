@@ -9,6 +9,7 @@ import {
   response_400,
 } from "../utils/responseCodes.js";
 
+
 // @user
 export const createNewUser = TryCatch(
   async (
@@ -22,19 +23,20 @@ export const createNewUser = TryCatch(
     let user = await User.findById(_id);
     if (user) {
       response_200(res, true, `Welcome, ${user.name}`, user);
-      return next();
+      return;
 
       // res.status(200).json({
       //   success: true,
       //   message: `Welcome, ${user.name}`,
       // });
-      // return next();
+      // return;
     }
-
+ 
     if (!_id || !name || !email || !photo || !gender || !dob) {
       // can be done using response codes files in utils instead of next method
-      // response_400(res, false, "All fields are required")
-      // return next()
+
+      // response_400(res, false, "All fields are required");
+      // return;
 
       return next(new ErrorHandler("All fields are required", 400));
     }
@@ -53,9 +55,10 @@ export const createNewUser = TryCatch(
     //   success: true,
     //   message: `Welcome, ${user.name}`,
     // });
-    return next();
+    return;
   }
 );
+
 
 // @admin
 export const getAllUsers = TryCatch(async (req, res, next) => {
@@ -65,6 +68,35 @@ export const getAllUsers = TryCatch(async (req, res, next) => {
   //   success: true,
   //   users,
   // });
-  return next();
+  return;
 });
 
+
+// @user
+export const getUserProfile = TryCatch(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+
+  response_200(res, true, "User details fetched", user);
+  return;
+});
+
+
+// @admin
+export const deleteUser = TryCatch(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+
+  await user.deleteOne();
+
+  response_200(res, true, "User deleted", user);
+  return;
+});
