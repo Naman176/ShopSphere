@@ -40,3 +40,7 @@ export interface SearchBaseQuery {
   };
   category?: string;
 }
+
+export type InvalidateCacheProps = {
+  product?: boolean;
+};

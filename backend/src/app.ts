@@ -2,6 +2,7 @@ import express from "express";
 import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
 // import { generateProducts, deleteRandomProducts } from "./utils/genera teRandomData.js";
+import NodeCache from "node-cache";
 
 // Importing Routes
 import productRouter from "./routes/product.js";
@@ -10,6 +11,10 @@ import userRouter from "./routes/user.js";
 const port = 3000;
 
 connectDB();
+
+// Creating Cache Instance
+export const myCache = new NodeCache();
+
 const app = express();
 
 // Using important middlewares
