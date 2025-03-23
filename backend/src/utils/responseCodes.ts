@@ -1,17 +1,20 @@
 import { Response } from "express";
+import { Document } from "mongoose";
 
 // Function to send a 200 OK response
 export const response_200 = (
   res: Response,
   success: boolean,
   message: string,
-  data: Document | Document[]
+  data: Document | Document[] | string[],
+  utilData?: number | string
 ) => {
   return res.status(200).json({
     success,
     status: "OK", // Status of the response
     message, // Custom message
     data, // Data returned in the response
+    utilData,
   });
 };
 
