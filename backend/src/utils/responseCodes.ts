@@ -6,7 +6,7 @@ export const response_200 = (
   res: Response,
   success: boolean,
   message: string,
-  data: Document | Document[] | string[],
+  data: Document | Document[] | string[] | number,
   utilData?: number | string
 ) => {
   return res.status(200).json({

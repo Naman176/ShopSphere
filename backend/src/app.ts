@@ -10,6 +10,7 @@ import morgan from "morgan";
 import productRouter from "./routes/product.js";
 import userRouter from "./routes/user.js";
 import orderRouter from "./routes/order.js";
+import paymentRouter from "./routes/payment.js";
 
 // Setting up dotenv file
 config({
@@ -28,12 +29,13 @@ const app = express();
 
 // Using important middlewares
 app.use(express.json());
-app.use(morgan("dev"));   // Gives all the info about request in the terminal
+app.use(morgan("dev")); // Gives all the info about request in the terminal
 
 // Using Routes
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/payment", paymentRouter);
 
 // Making uploads static folder so that it is accessible
 app.use("/uploads", express.static("uploads"));
