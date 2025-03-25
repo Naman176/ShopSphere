@@ -44,7 +44,7 @@ export const createNewProduct = TryCatch(
     // Invalidating Cache
     await invalidateCache({ product: true });
 
-    response_201(res, true, "Product created Successfully");
+    response_201(res, true, "Product Created");
     return;
   }
 );
@@ -66,12 +66,7 @@ export const getLatestProducts = TryCatch(async (req, res, next) => {
     myCache.set("latest-products", JSON.stringify(latestProducts));
   }
 
-  response_200(
-    res,
-    true,
-    "Latest products fetched Successfully",
-    latestProducts
-  );
+  response_200(res, true, "Latest products Fetched", latestProducts);
   return;
 });
 
@@ -92,7 +87,7 @@ export const getAllCategories = TryCatch(async (req, res, next) => {
     myCache.set("categories", JSON.stringify(categories));
   }
 
-  response_200(res, true, "All categories fetched Successfully", categories);
+  response_200(res, true, "All categories Fetched", categories);
   return;
 });
 
@@ -113,7 +108,7 @@ export const getAllProducts = TryCatch(async (req, res, next) => {
     myCache.set("all-products", JSON.stringify(allProducts));
   }
 
-  response_200(res, true, "All products fetched Successfully", allProducts);
+  response_200(res, true, "All products Fetched", allProducts);
   return;
 });
 
@@ -140,7 +135,7 @@ export const getProductDetails = TryCatch(async (req, res, next) => {
     myCache.set(`product-${id}`, JSON.stringify(product));
   }
 
-  response_200(res, true, "Product details fetched Successfully", product);
+  response_200(res, true, "Product details Fetched", product);
   return;
 });
 
@@ -171,9 +166,9 @@ export const updateProduct = TryCatch(async (req, res, next) => {
   product.save();
 
   // Invalidating Cache
-  await invalidateCache({ product: true });
+  await invalidateCache({ product: true, productId: String(product._id) });
 
-  response_200(res, true, "Product updates Successfully", product);
+  response_200(res, true, "Product Updated", product);
   return;
 });
 
@@ -193,7 +188,7 @@ export const deleteProduct = TryCatch(async (req, res, next) => {
   await product.deleteOne();
 
   // Invalidating Cache
-  await invalidateCache({ product: true });
+  await invalidateCache({ product: true, productId: String(product._id) });
 
   response_200(res, true, "Product Deleted", product);
   return;
@@ -244,13 +239,7 @@ export const searchAndFilterProducts = TryCatch(
 
     const totalPages = Math.ceil(allSearchedProducts.length / limit);
 
-    response_200(
-      res,
-      true,
-      "Products fetched Successfully",
-      searchedProducts,
-      totalPages
-    );
+    response_200(res, true, "Products Fetched", searchedProducts, totalPages);
     return;
   }
 );
