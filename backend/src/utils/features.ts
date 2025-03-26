@@ -13,7 +13,7 @@ export const connectDB = (uri: string) => {
     .catch((e) => console.log(e));
 };
 
-export const invalidateCache = async ({
+export const invalidateCache = ({
   product,
   productId,
   order,
@@ -44,13 +44,16 @@ export const invalidateCache = async ({
       `order-${orderId}`,
     ];
 
-    const orderIds = await Order.find({}).select("_id");
-
-    orderIds.forEach((i) => {
-      orderKeys.push(`order-${i._id}`);
-    });
-
     myCache.del(orderKeys);
+  }
+
+  if (admin) {
+    myCache.del([
+      "admin-stats",
+      "admin-bar-charts",
+      "admin-pie-charts",
+      "admin-line-charts",
+    ]);
   }
 };
 
@@ -64,4 +67,13 @@ export const reduceStock = async (orderItems: OrderItemType[]) => {
     product.stock -= order.quantity;
     await product.save();
   }
+};
+
+export const calculateStatsPercentage = (
+  currentMonth: number,
+  lastMonth: number
+): number => {
+  if (lastMonth === 0) return currentMonth * 100;
+  const percent = (currentMonth / lastMonth) * 100;
+  return Number(percent.toFixed(0));
 };

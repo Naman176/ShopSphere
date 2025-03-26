@@ -11,6 +11,7 @@ import productRouter from "./routes/product.js";
 import userRouter from "./routes/user.js";
 import orderRouter from "./routes/order.js";
 import paymentRouter from "./routes/payment.js";
+import dashboardRouter from "./routes/dashboard.js";
 
 // Setting up dotenv file
 config({
@@ -36,6 +37,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/payment", paymentRouter);
+app.use("/api/v1/dashboard", dashboardRouter);
 
 // Making uploads static folder so that it is accessible
 app.use("/uploads", express.static("uploads"));

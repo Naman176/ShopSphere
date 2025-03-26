@@ -42,7 +42,7 @@ export const createNewProduct = TryCatch(
     });
 
     // Invalidating Cache
-    await invalidateCache({ product: true });
+    invalidateCache({ product: true, admin: true });
 
     response_201(res, true, "Product Created");
     return;
@@ -91,7 +91,7 @@ export const getAllCategories = TryCatch(async (req, res, next) => {
   return;
 });
 
-// @user
+// @admin
 // *************** Revalidate cache on create, update, delete product and on New Order *****************
 export const getAllProducts = TryCatch(async (req, res, next) => {
   let allProducts;
@@ -166,7 +166,11 @@ export const updateProduct = TryCatch(async (req, res, next) => {
   product.save();
 
   // Invalidating Cache
-  await invalidateCache({ product: true, productId: String(product._id) });
+  invalidateCache({
+    product: true,
+    productId: String(product._id),
+    admin: true,
+  });
 
   response_200(res, true, "Product Updated", product);
   return;
@@ -188,7 +192,11 @@ export const deleteProduct = TryCatch(async (req, res, next) => {
   await product.deleteOne();
 
   // Invalidating Cache
-  await invalidateCache({ product: true, productId: String(product._id) });
+  invalidateCache({
+    product: true,
+    productId: String(product._id),
+    admin: true,
+  });
 
   response_200(res, true, "Product Deleted", product);
   return;

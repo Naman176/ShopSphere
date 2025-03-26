@@ -17,7 +17,7 @@ const productRouter = express.Router();
 productRouter.post("/new", isAdmin, singleUpload, createNewProduct);
 productRouter.get("/latest", getLatestProducts);
 productRouter.get("/category", getAllCategories);
-productRouter.get("/all", getAllProducts);
+productRouter.get("/all", isAdmin, getAllProducts);
 productRouter.get("/search", searchAndFilterProducts);
 productRouter
   .route("/:id")
