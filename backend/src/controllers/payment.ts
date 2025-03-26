@@ -1,7 +1,30 @@
+import { stripe } from "../app.js";
 import { TryCatch } from "../middlewares/error.js";
 import { Coupon } from "../models/coupon.js";
 import { response_200, response_201 } from "../utils/responseCodes.js";
 import ErrorHandler from "../utils/utility_class.js";
+
+// @user
+export const createPaymentIntent = TryCatch(async (req, res, next) => {
+  const { amount } = req.body;
+
+  if (!amount) {
+    return next(new ErrorHandler("Amount is required", 400));
+  }
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: Number(amount) * 100,
+    currency: "inr",
+  });
+
+  response_201(
+    res,
+    true,
+    "Payment Intent Created",
+    paymentIntent.client_secret!
+  );
+  return;
+});
 
 // @admin
 export const createNewCoupon = TryCatch(async (req, res, next) => {

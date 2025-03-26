@@ -5,6 +5,7 @@ import { errorMiddleware } from "./middlewares/error.js";
 import NodeCache from "node-cache";
 import { config } from "dotenv";
 import morgan from "morgan";
+import Stripe from "stripe";
 
 // Importing Routes
 import productRouter from "./routes/product.js";
@@ -20,11 +21,14 @@ config({
 
 const port = process.env.PORT || 3000;
 const mongoURI = process.env.MONGO_URI || "";
+const stripeKey = process.env.STRIPE_KEY || "";
 
+// Connecting to DB
 connectDB(mongoURI);
 
 // Creating Cache Instance
 export const myCache = new NodeCache();
+export const stripe = new Stripe(stripeKey);
 
 const app = express();
 

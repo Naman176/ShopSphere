@@ -22,12 +22,14 @@ export const response_200 = (
 export const response_201 = (
   res: Response,
   success: boolean,
-  message: string
+  message: string,
+  data?: Document | Document[] | string
 ) => {
   return res.status(201).json({
     success,
     status: "Inserted", // Status indicating a resource was created
     message, // Custom message
+    data,
   });
 };
 
