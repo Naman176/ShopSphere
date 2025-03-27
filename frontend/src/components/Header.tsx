@@ -8,7 +8,7 @@ import {
 import { ImHome, ImSearch } from "react-icons/im";
 import { Link } from "react-router-dom";
 
-const user = { _id: "rbb", role: "admin" };
+const user = { _id: "", role: "" };
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

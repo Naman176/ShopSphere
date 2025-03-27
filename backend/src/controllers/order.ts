@@ -25,7 +25,7 @@ export const createNewOrder = TryCatch(
       return next(new ErrorHandler("All fields are required", 400));
     }
 
-    await Order.create({
+    const order = await Order.create({
       shippingInfo,
       user,
       subTotal,
@@ -46,7 +46,7 @@ export const createNewOrder = TryCatch(
       userId: user,
     });
 
-    response_201(res, true, "Order Placed");
+    response_201(res, true, "Order Placed", { order });
     return;
   }
 );
@@ -66,7 +66,7 @@ export const myOrders = TryCatch(async (req, res, next) => {
     myCache.set(key, JSON.stringify(orders));
   }
 
-  response_200(res, true, "My orders Fetched", orders);
+  response_200(res, true, "My orders Fetched", { orders });
   return;
 });
 
@@ -83,7 +83,7 @@ export const allOrders = TryCatch(async (req, res, next) => {
     myCache.set(key, JSON.stringify(orders));
   }
 
-  response_200(res, true, "All orders Fetched", orders);
+  response_200(res, true, "All orders Fetched", { orders });
   return;
 });
 
@@ -107,7 +107,7 @@ export const getOrderDetails = TryCatch(async (req, res, next) => {
     myCache.set(key, JSON.stringify(order));
   }
 
-  response_200(res, true, "Order details Fetched", order);
+  response_200(res, true, "Order details Fetched", { order });
   return;
 });
 
@@ -139,7 +139,7 @@ export const processOrder = TryCatch(async (req, res, next) => {
     orderId: String(order._id),
   });
 
-  response_200(res, true, "Order Processed", order);
+  response_200(res, true, "Order Processed", { order });
   return;
 });
 
@@ -163,6 +163,6 @@ export const deleteOrder = TryCatch(async (req, res, next) => {
     orderId: String(order._id),
   });
 
-  response_200(res, true, "Order Deleted", order);
+  response_200(res, true, "Order Deleted", { order });
   return;
 });

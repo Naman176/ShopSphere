@@ -9,7 +9,6 @@ import {
   response_400,
 } from "../utils/responseCodes.js";
 
-
 // @user
 export const createNewUser = TryCatch(
   async (
@@ -22,7 +21,7 @@ export const createNewUser = TryCatch(
     // If sign in via google (already a user)
     let user = await User.findById(_id);
     if (user) {
-      response_200(res, true, `Welcome, ${user.name}`, user);
+      response_200(res, true, `Welcome, ${user.name}`, { user });
       return;
 
       // res.status(200).json({
@@ -31,7 +30,7 @@ export const createNewUser = TryCatch(
       // });
       // return;
     }
- 
+
     if (!_id || !name || !email || !photo || !gender || !dob) {
       // can be done using response codes files in utils instead of next method
 
@@ -50,7 +49,7 @@ export const createNewUser = TryCatch(
       dob: new Date(dob),
     });
 
-    response_201(res, true, `Welcome, ${user.name}`);
+    response_201(res, true, `Welcome, ${user.name}`, { user });
     // res.status(201).json({
     //   success: true,
     //   message: `Welcome, ${user.name}`,
@@ -59,18 +58,16 @@ export const createNewUser = TryCatch(
   }
 );
 
-
 // @admin
 export const getAllUsers = TryCatch(async (req, res, next) => {
   const users = await User.find({});
-  response_200(res, true, "All users fetched", users);
+  response_200(res, true, "All users fetched", { users });
   // res.status(200).json({
   //   success: true,
   //   users,
   // });
   return;
 });
-
 
 // @user
 export const getUserProfile = TryCatch(async (req, res, next) => {
@@ -81,10 +78,9 @@ export const getUserProfile = TryCatch(async (req, res, next) => {
     return next(new ErrorHandler("User not found", 404));
   }
 
-  response_200(res, true, "User details fetched", user);
+  response_200(res, true, "User details fetched", { user });
   return;
 });
-
 
 // @admin
 export const deleteUser = TryCatch(async (req, res, next) => {
@@ -97,6 +93,6 @@ export const deleteUser = TryCatch(async (req, res, next) => {
 
   await user.deleteOne();
 
-  response_200(res, true, "User deleted", user);
+  response_200(res, true, "User deleted", { user });
   return;
 });

@@ -17,12 +17,9 @@ export const createPaymentIntent = TryCatch(async (req, res, next) => {
     currency: "inr",
   });
 
-  response_201(
-    res,
-    true,
-    "Payment Intent Created",
-    paymentIntent.client_secret!
-  );
+  response_201(res, true, "Payment Intent Created", {
+    paymentIntent: paymentIntent.client_secret!,
+  });
   return;
 });
 
@@ -36,9 +33,9 @@ export const createNewCoupon = TryCatch(async (req, res, next) => {
     );
   }
 
-  await Coupon.create({ couponCode, amount });
+  const coupon = await Coupon.create({ couponCode, amount });
 
-  response_201(res, true, `Coupon ${couponCode} Created`);
+  response_201(res, true, `Coupon ${couponCode} Created`, { coupon });
   return;
 });
 
@@ -51,7 +48,9 @@ export const applyCoupon = TryCatch(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Coupon Code", 400));
   }
 
-  response_200(res, true, `Coupon ${coupon.couponCode} Applied`, coupon.amount);
+  response_200(res, true, `Coupon ${coupon.couponCode} Applied`, {
+    discount: coupon.amount,
+  });
   return;
 });
 
@@ -59,7 +58,7 @@ export const applyCoupon = TryCatch(async (req, res, next) => {
 export const getAllCoupons = TryCatch(async (req, res, next) => {
   const allCoupons = await Coupon.find();
 
-  response_200(res, true, "All Coupons Fetched", allCoupons);
+  response_200(res, true, "All Coupons Fetched", { allCoupons });
   return;
 });
 
@@ -73,6 +72,6 @@ export const deleteCoupon = TryCatch(async (req, res, next) => {
 
   await coupon.deleteOne();
 
-  response_200(res, true, `Coupon ${coupon.couponCode} Deleted`, coupon);
+  response_200(res, true, `Coupon ${coupon.couponCode} Deleted`, { coupon });
   return;
 });

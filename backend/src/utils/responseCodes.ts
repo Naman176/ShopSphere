@@ -6,15 +6,13 @@ export const response_200 = (
   res: Response,
   success: boolean,
   message: string,
-  data: Document | Document[] | string[] | number,
-  utilData?: number | string
+  data: Object
 ) => {
   return res.status(200).json({
     success,
     status: "OK", // Status of the response
     message, // Custom message
     data, // Data returned in the response
-    utilData,
   });
 };
 
@@ -23,7 +21,7 @@ export const response_201 = (
   res: Response,
   success: boolean,
   message: string,
-  data?: Document | Document[] | string
+  data: Object
 ) => {
   return res.status(201).json({
     success,

@@ -208,7 +208,7 @@ export const getStatData = TryCatch(async (req, res, next) => {
     myCache.set(key, JSON.stringify(stats));
   }
 
-  response_200(res, true, "Stats Data Fetched", stats);
+  response_200(res, true, "Stats Data Fetched", { stats });
   return;
 });
 
@@ -294,7 +294,7 @@ export const getBarData = TryCatch(async (req, res, next) => {
     myCache.set(key, JSON.stringify(charts));
   }
 
-  response_200(res, true, "Bar Charts Data Fetched", charts);
+  response_200(res, true, "Bar Charts Data Fetched", { charts });
   next;
 });
 
@@ -405,7 +405,7 @@ export const getPieData = TryCatch(async (req, res, next) => {
     myCache.set(key, JSON.stringify(charts));
   }
 
-  response_200(res, true, "Pie Charts Data Fetched", charts);
+  response_200(res, true, "Pie Charts Data Fetched", { charts });
   next;
 });
 
@@ -495,6 +495,6 @@ export const getLineData = TryCatch(async (req, res, next) => {
     myCache.set(key, JSON.stringify(charts));
   }
 
-  response_200(res, true, "Bar Charts Data Fetched", charts);
+  response_200(res, true, "Bar Charts Data Fetched", { charts });
   next;
 });

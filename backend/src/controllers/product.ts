@@ -33,7 +33,7 @@ export const createNewProduct = TryCatch(
       return next(new ErrorHandler("Please enter all Fields", 400));
     }
 
-    await Product.create({
+    const product = await Product.create({
       name,
       category: category.toLowerCase(),
       price,
@@ -44,7 +44,7 @@ export const createNewProduct = TryCatch(
     // Invalidating Cache
     invalidateCache({ product: true, admin: true });
 
-    response_201(res, true, "Product Created");
+    response_201(res, true, "Product Created", { product });
     return;
   }
 );
@@ -66,7 +66,7 @@ export const getLatestProducts = TryCatch(async (req, res, next) => {
     myCache.set("latest-products", JSON.stringify(latestProducts));
   }
 
-  response_200(res, true, "Latest products Fetched", latestProducts);
+  response_200(res, true, "Latest products Fetched", { latestProducts });
   return;
 });
 
@@ -87,7 +87,7 @@ export const getAllCategories = TryCatch(async (req, res, next) => {
     myCache.set("categories", JSON.stringify(categories));
   }
 
-  response_200(res, true, "All categories Fetched", categories);
+  response_200(res, true, "All categories Fetched", { categories });
   return;
 });
 
@@ -108,7 +108,7 @@ export const getAllProducts = TryCatch(async (req, res, next) => {
     myCache.set("all-products", JSON.stringify(allProducts));
   }
 
-  response_200(res, true, "All products Fetched", allProducts);
+  response_200(res, true, "All products Fetched", { allProducts });
   return;
 });
 
@@ -135,7 +135,7 @@ export const getProductDetails = TryCatch(async (req, res, next) => {
     myCache.set(`product-${id}`, JSON.stringify(product));
   }
 
-  response_200(res, true, "Product details Fetched", product);
+  response_200(res, true, "Product details Fetched", { product });
   return;
 });
 
@@ -172,7 +172,7 @@ export const updateProduct = TryCatch(async (req, res, next) => {
     admin: true,
   });
 
-  response_200(res, true, "Product Updated", product);
+  response_200(res, true, "Product Updated", { product });
   return;
 });
 
@@ -198,7 +198,7 @@ export const deleteProduct = TryCatch(async (req, res, next) => {
     admin: true,
   });
 
-  response_200(res, true, "Product Deleted", product);
+  response_200(res, true, "Product Deleted", { product });
   return;
 });
 
@@ -247,7 +247,10 @@ export const searchAndFilterProducts = TryCatch(
 
     const totalPages = Math.ceil(allSearchedProducts.length / limit);
 
-    response_200(res, true, "Products Fetched", searchedProducts, totalPages);
+    response_200(res, true, "Products Fetched", {
+      searchedProducts,
+      totalPages,
+    });
     return;
   }
 );
