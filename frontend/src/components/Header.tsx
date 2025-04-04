@@ -7,10 +7,13 @@ import {
 } from "react-icons/fa";
 import { ImHome, ImSearch } from "react-icons/im";
 import { Link } from "react-router-dom";
+import { User } from "../types/types";
 
-const user = { _id: "", role: "" };
+interface PropTypes {
+  user: User | null;
+}
 
-const Header = () => {
+const Header = ({ user }: PropTypes) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const logoutHandler = () => {

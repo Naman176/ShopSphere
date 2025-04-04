@@ -6,6 +6,7 @@ import NodeCache from "node-cache";
 import { config } from "dotenv";
 import morgan from "morgan";
 import Stripe from "stripe";
+import cors from "cors";
 
 // Importing Routes
 import productRouter from "./routes/product.js";
@@ -28,6 +29,8 @@ connectDB(mongoURI);
 
 // Creating Cache Instance
 export const myCache = new NodeCache();
+
+// Creating Stripe Instance
 export const stripe = new Stripe(stripeKey);
 
 const app = express();
@@ -35,6 +38,7 @@ const app = express();
 // Using important middlewares
 app.use(express.json());
 app.use(morgan("dev")); // Gives all the info about request in the terminal
+app.use(cors());
 
 // Using Routes
 app.use("/api/v1/user", userRouter);
