@@ -7,9 +7,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { getUser } from "./redux/api/userAPI";
 import { useDispatch, useSelector } from "react-redux";
-import { userExist } from "./redux/reducer/userReducer";
-import { User } from "./types/types";
+import { userExist, userNotExist } from "./redux/reducer/userReducer";
 import { UserReducerInitialState } from "./types/reducerTypes";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
@@ -51,7 +51,7 @@ const App = () => {
         const { data } = await getUser(firebaseUser.uid);
         dispatch(userExist(data.user));
       } else {
-        console.log("Not Logged In");
+        dispatch(userNotExist());
       }
     });
   }, []);
@@ -71,31 +71,55 @@ const App = () => {
             <Route path="/cart" element={<Cart />} />
 
             {/* Not Logged In Route */}
-            <Route path="/login" element={<Login />} />
-
-            {/* Logged In User Routes */}
-            <Route path="/shipping" element={<Shipping />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/order/:id" element={<OrderDetails />} />
-
-            {/* Admin Routes */}
-            <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/customers" element={<Customers />} />
-            <Route path="/admin/products" element={<Products />} />
-            <Route path="/admin/transaction" element={<Transaction />} />
-
-            <Route path="/admin/product/new" element={<NewProduct />} />
-            <Route path="/admin/product/:id" element={<ProductManagement />} />
             <Route
-              path="/admin/transaction/:id"
-              element={<TransactionManagement />}
+              path="/login"
+              element={
+                <ProtectedRoute isAuthenticated={user ? false : true}>
+                  <Login />
+                </ProtectedRoute>
+              }
             />
 
-            <Route path="/admin/chart/bar" element={<BarCharts />} />
-            <Route path="/admin/chart/pie" element={<PieCharts />} />
-            <Route path="/admin/chart/line" element={<LineCharts />} />
+            {/* Logged In User Routes */}
+            <Route
+              element={<ProtectedRoute isAuthenticated={user ? true : false} />}
+            >
+              <Route path="/shipping" element={<Shipping />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/order/:id" element={<OrderDetails />} />
+            </Route>
 
-            <Route path="/admin/app/coupon" element={<Coupon />} />
+            {/* Admin Routes */}
+            <Route
+              element={
+                <ProtectedRoute
+                  isAuthenticated={user ? true : false}
+                  adminRoute={true}
+                  isAdmin={user?.role === "admin" ? true : false}
+                />
+              }
+            >
+              <Route path="/admin/dashboard" element={<Dashboard />} />
+              <Route path="/admin/customers" element={<Customers />} />
+              <Route path="/admin/products" element={<Products />} />
+              <Route path="/admin/transaction" element={<Transaction />} />
+
+              <Route path="/admin/product/new" element={<NewProduct />} />
+              <Route
+                path="/admin/product/:id"
+                element={<ProductManagement />}
+              />
+              <Route
+                path="/admin/transaction/:id"
+                element={<TransactionManagement />}
+              />
+
+              <Route path="/admin/chart/bar" element={<BarCharts />} />
+              <Route path="/admin/chart/pie" element={<PieCharts />} />
+              <Route path="/admin/chart/line" element={<LineCharts />} />
+
+              <Route path="/admin/app/coupon" element={<Coupon />} />
+            </Route>
           </Routes>
         </Suspense>
         <Toaster position="bottom-center" />

@@ -8,6 +8,9 @@ import {
 import { ImHome, ImSearch } from "react-icons/im";
 import { Link } from "react-router-dom";
 import { User } from "../types/types";
+import toast from "react-hot-toast";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 interface PropTypes {
   user: User | null;
@@ -16,8 +19,14 @@ interface PropTypes {
 const Header = ({ user }: PropTypes) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const logoutHandler = () => {
-    setIsOpen(false);
+  const logoutHandler = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Signed Out Successfully");
+      setIsOpen(false);
+    } catch (error) {
+      toast.error("Sign Out Failed");
+    }
   };
 
   return (
