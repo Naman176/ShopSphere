@@ -21,6 +21,20 @@
   }
 }
 
+.productDeleteBtn {
+  background-color: rgb(56, 56, 56);
+  color: white;
+  font-size: 1.2rem;
+  @include square(2.5rem);
+  @include flex;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+}
+
 .productManagementContainer {
   @include flex(row, center, unset);
   padding: 2rem;
@@ -77,6 +91,7 @@
     background-color: white;
     border-radius: 5px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.216);
+    position: relative;
 
     > form {
       @include flex(column, unset, center, 2rem);

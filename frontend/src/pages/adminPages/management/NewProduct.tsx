@@ -1,11 +1,26 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import Sidebar from "../../../components/adminComponents/Sidebar";
+import { useSelector } from "react-redux";
+import { UserReducerInitialState } from "../../../types/reducerTypes";
+import { useCreateProductMutation } from "../../../redux/api/productAPI";
+import { reactToastRes } from "../../../utils/Features";
+import { useNavigate } from "react-router-dom";
 
 const NewProduct = () => {
+  const { user } = useSelector(
+    (state: { userReducer: UserReducerInitialState }) => state.userReducer
+  );
+
+  const navigate = useNavigate();
+
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<number>();
   const [stock, setStock] = useState<number>();
-  const [pic, setPic] = useState<string>();
+  const [pic, setPic] = useState<File>();
+  const [picPrev, setPicPrev] = useState<string>();
+  const [category, setCategory] = useState<string>();
+
+  const [newProduct] = useCreateProductMutation();
 
   const picHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const file: File | undefined = e.target.files?.[0];
@@ -15,9 +30,28 @@ const NewProduct = () => {
     if (file) {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        if (typeof reader.result === "string") setPic(reader.result);
+        if (typeof reader.result === "string") {
+          setPicPrev(reader.result);
+          setPic(file);
+        }
       };
     }
+  };
+
+  const createProductHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!name || !price || !stock || !pic || !category) return;
+
+    const formData = new FormData();
+    formData.set("name", name);
+    formData.set("price", price?.toString());
+    formData.set("stock", stock?.toString());
+    formData.set("photo", pic);
+    formData.set("category", category);
+
+    const res = await newProduct({ id: user?._id!, formData });
+    reactToastRes(res, navigate, "/admin/products");
   };
 
   return (
@@ -25,7 +59,7 @@ const NewProduct = () => {
       <Sidebar />
       <main className="productManagementContainer">
         <article>
-          <form>
+          <form onSubmit={createProductHandler}>
             <h2>New Product</h2>
             <div>
               <label>Name</label>
@@ -58,10 +92,20 @@ const NewProduct = () => {
               />
             </div>
             <div>
+              <label>Category</label>
+              <input
+                type="text"
+                placeholder="Category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              />
+            </div>
+            <div>
               <label>Image</label>
               <input type="file" onChange={picHandler} required />
             </div>
-            {pic && <img src={pic} alt="Product Image" />}
+            {picPrev && <img src={picPrev} alt="Product Image" />}
             <button type="submit">Add Product</button>
           </form>
         </article>

@@ -1,15 +1,51 @@
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
+import {
+  useAllCategoriesQuery,
+  useSearchAndFilterProductsQuery,
+} from "../redux/api/productAPI";
+import toast from "react-hot-toast";
+import { CustomError } from "../types/apiTypes";
+import { Product } from "../types/types";
+import Loader from "../components/Loader";
 
 const Search = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
-  const [maxPrice, setMaxPrice] = useState(100000);
+  const [maxPrice, setMaxPrice] = useState(500000);
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
   const isPrevPage = page > 1;
   const isNextPage = page < 4;
+
+  const {
+    data: categoryData,
+    isLoading: categoryIsLoading,
+    isError: categoryIsError,
+    error: categoryError,
+  } = useAllCategoriesQuery("");
+
+  const {
+    data: searchedData,
+    isLoading: searchIsLoading,
+    isError: searchIsError,
+    error: SearchError,
+  } = useSearchAndFilterProductsQuery({
+    search,
+    sort,
+    category,
+    page,
+    price: maxPrice,
+  });
+
+  if (categoryIsError) {
+    toast.error((categoryError as CustomError).data.message);
+  }
+
+  if (searchIsError) {
+    toast.error((SearchError as CustomError).data.message);
+  }
 
   const addToCartHandler = () => {};
 
@@ -31,7 +67,7 @@ const Search = () => {
           <input
             type="range"
             min={100}
-            max={100000}
+            max={500000}
             value={maxPrice}
             onChange={(e) => setMaxPrice(Number(e.target.value))}
           />
@@ -44,8 +80,12 @@ const Search = () => {
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">All</option>
-            <option value="asc">Sample1</option>
-            <option value="desc">Sample2</option>
+            {!categoryIsLoading &&
+              categoryData?.data.categories.map((i: string) => (
+                <option key={i} value={i}>
+                  {i.toUpperCase()}
+                </option>
+              ))}
           </select>
         </div>
       </aside>
@@ -59,34 +99,43 @@ const Search = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <div className="searchProductList">
-          <ProductCard
-            productId="viewveijv"
-            name="Macbook"
-            price={84000}
-            stock={20}
-            handler={addToCartHandler}
-            photo="https://m.media-amazon.com/images/I/71jG+e7roXL._SL1500_.jpg"
-          />
-        </div>
+        {searchIsLoading ? (
+          <Loader />
+        ) : (
+          <div className="searchProductList">
+            {searchedData?.data.searchedProducts.map((i: Product) => (
+              <ProductCard
+                key={i._id}
+                productId={i._id}
+                name={i.name}
+                price={i.price}
+                stock={i.stock}
+                handler={addToCartHandler}
+                photo={i.photo}
+              />
+            ))}
+          </div>
+        )}
 
-        <article>
-          <button
-            disabled={!isPrevPage}
-            onClick={() => setPage((prev) => prev - 1)}
-          >
-            Prev
-          </button>
-          <span>
-            {page} of {4}
-          </span>
-          <button
-            disabled={!isNextPage}
-            onClick={() => setPage((prev) => prev + 1)}
-          >
-            Next
-          </button>
-        </article>
+        {searchedData && searchedData.data.totalPages > 1 && (
+          <article>
+            <button
+              disabled={!isPrevPage}
+              onClick={() => setPage((prev) => prev - 1)}
+            >
+              Prev
+            </button>
+            <span>
+              {page} of {searchedData.data.totalPages}
+            </span>
+            <button
+              disabled={!isNextPage}
+              onClick={() => setPage((prev) => prev + 1)}
+            >
+              Next
+            </button>
+          </article>
+        )}
       </main>
     </div>
   );
