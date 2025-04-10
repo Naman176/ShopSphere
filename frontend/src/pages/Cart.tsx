@@ -5,11 +5,14 @@ import { Link } from "react-router-dom";
 import CartItemCard from "../components/CartItem";
 import {
   addToCart,
+  applyDiscount,
   calculatePrice,
   removeCartItem,
 } from "../redux/reducer/cartReducer";
 import { CartReducerInitialState } from "../types/reducerTypes";
 import { CartItem } from "../types/types";
+import axios from "axios";
+import { server } from "../redux/store";
 
 const Cart = () => {
   const { cartItems, subTotal, tax, discount, shippingCharges, total } =
@@ -37,13 +40,28 @@ const Cart = () => {
   };
 
   useEffect(() => {
+    const { token, cancel } = axios.CancelToken.source();
+
     const TimeoutId = setTimeout(() => {
-      if (Math.random() > 0.5) setIsValidCouponCode(true);
-      else setIsValidCouponCode(false);
+      axios
+        .get(`${server}/api/v1/payment/coupon/apply?couponCode=${couponCode}`, {
+          cancelToken: token,
+        })
+        .then((res) => {
+          dispatch(applyDiscount(res.data.data.discount));
+          setIsValidCouponCode(true);
+          dispatch(calculatePrice());
+        })
+        .catch(() => {
+          dispatch(applyDiscount(0));
+          setIsValidCouponCode(false);
+          dispatch(calculatePrice());
+        });
     }, 1000);
 
     return () => {
       clearTimeout(TimeoutId);
+      cancel();
       setIsValidCouponCode(false);
     };
   }, [couponCode]);
