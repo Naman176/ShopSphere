@@ -6,10 +6,14 @@ import {
 } from "../redux/api/productAPI";
 import toast from "react-hot-toast";
 import { CustomError } from "../types/apiTypes";
-import { Product } from "../types/types";
+import { CartItem, Product } from "../types/types";
 import Loader from "../components/Loader";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/reducer/cartReducer";
 
 const Search = () => {
+  const dispatch = useDispatch();
+
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [maxPrice, setMaxPrice] = useState(500000);
@@ -47,7 +51,11 @@ const Search = () => {
     toast.error((SearchError as CustomError).data.message);
   }
 
-  const addToCartHandler = () => {};
+  const addToCartHandler = (cartItem: CartItem) => {
+    if (cartItem.stock < 1) return toast.error("Product Out of Stock");
+    dispatch(addToCart(cartItem));
+    toast.success("Product Added to Cart");
+  };
 
   return (
     <div className="productSearchPage">
