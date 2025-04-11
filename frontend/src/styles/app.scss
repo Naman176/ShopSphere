@@ -297,3 +297,20 @@ a {
     transform: rotateZ(360deg);
   }
 }
+
+.checkoutContainer {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 5rem;
+  margin-top: 5rem;
+
+  > form {
+    @include flex(column, flex-start, stretch, 2rem);
+
+    > button {
+      @include btn(1rem, $color3, $color1);
+      width: 100%;
+    }
+  }
+}

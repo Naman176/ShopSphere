@@ -37,6 +37,7 @@ const BarCharts = lazy(() => import("./pages/adminPages/charts/BarCharts"));
 const PieCharts = lazy(() => import("./pages/adminPages/charts/PieCharts"));
 const LineCharts = lazy(() => import("./pages/adminPages/charts/LineCharts"));
 const Coupon = lazy(() => import("./pages/adminPages/apps/Coupon"));
+const Checkout = lazy(() => import("./pages/Checkout"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const App = () => {
@@ -88,6 +89,7 @@ const App = () => {
               <Route path="/shipping" element={<Shipping />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/order/:id" element={<OrderDetails />} />
+              <Route path="/pay" element={<Checkout />} />
             </Route>
 
             {/* Admin Routes */}
