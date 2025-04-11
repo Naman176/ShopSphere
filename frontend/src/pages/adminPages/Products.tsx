@@ -71,7 +71,7 @@ const Products = () => {
     rows,
     "productBox",
     "Products",
-    true
+    rows.length > 6
   );
 
   return (

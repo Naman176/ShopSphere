@@ -37,6 +37,7 @@ const BarCharts = lazy(() => import("./pages/adminPages/charts/BarCharts"));
 const PieCharts = lazy(() => import("./pages/adminPages/charts/PieCharts"));
 const LineCharts = lazy(() => import("./pages/adminPages/charts/LineCharts"));
 const Coupon = lazy(() => import("./pages/adminPages/apps/Coupon"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const App = () => {
   const { user, loading } = useSelector(
@@ -120,6 +121,8 @@ const App = () => {
 
               <Route path="/admin/app/coupon" element={<Coupon />} />
             </Route>
+
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
         <Toaster position="bottom-center" />

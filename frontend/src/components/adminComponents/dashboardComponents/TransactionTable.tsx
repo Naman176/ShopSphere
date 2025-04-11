@@ -37,7 +37,7 @@ const TransactionTable = ({ data = [] }: { data: DataType[] }) => {
     columns,
     data,
     "transactionBox",
-    "Top Transaction"
+    "Top Transaction",
   )();
 };
 

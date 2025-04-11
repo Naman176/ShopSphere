@@ -1,0 +1,102 @@
+@use "./adminStyles/mixin" as *;
+@use "colors" as *;
+
+.errorContainer {
+  @include flex(column, center, center, 10px);
+  margin: 0 10px;
+}
+
+.errorCode {
+  width: 100%;
+  margin: 0 auto;
+  font-size: 6rem;
+  font-weight: 800;
+  @include flex(row, center, center, 10px);
+}
+
+.para1 {
+  animation: fall 1s linear;
+  transform: rotateZ(-20deg);
+}
+
+.para3 {
+  animation: fall 1.8s linear;
+  transform: rotateZ(8deg);
+}
+
+.para2 {
+  color: $color3;
+  animation: bounce 1.2s 1.8s linear forwards;
+  opacity: 0;
+}
+
+.errorTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0 3%;
+}
+
+.errorDescription {
+  font-size: 0.9rem;
+  text-align: justify;
+  line-height: 1.6;
+  padding: 0 10%;
+  color: black;
+}
+
+.action {
+  font: inherit;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: $color3;
+  color: $color1;
+}
+
+.action:hover {
+  opacity: 0.8;
+}
+
+@media screen and (min-width: 48rem) {
+  .errorDescription {
+    padding: 0;
+  }
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100vh);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  40%,
+  75%,
+  95% {
+    transform: transiateY(0);
+    opacity: 1;
+  }
+
+  15% {
+    transform: translateY(-25px);
+  }
+
+  65% {
+    transform: translateY(-15px);
+  }
+
+  85% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    transform: rotatez(25deg);
+    opacity: 1;
+  }
+}

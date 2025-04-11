@@ -1,3 +1,5 @@
+import { CartItem, ShippingInfo } from "./types";
+
 export type ResponseType = {
   success: string;
   status: string;
@@ -35,4 +37,20 @@ export type updateProductRequest = {
 export type deleteProductRequest = {
   userId: string;
   productId: string;
+};
+
+export type newOrderRequest = {
+  orderItems: CartItem[];
+  subTotal: number;
+  tax: number;
+  discount: number;
+  shippingCharges: number;
+  total: number;
+  shippingInfo: ShippingInfo;
+  user: string;
+};
+
+export type processOrderRequest = {
+  userId: string;
+  orderId: string;
 };
