@@ -8,9 +8,8 @@ import { useAllProductsQuery } from "../../redux/api/productAPI";
 import toast from "react-hot-toast";
 import { CustomError } from "../../types/apiTypes";
 import { useSelector } from "react-redux";
-import { UserReducerInitialState } from "../../types/reducerTypes";
 import { Product } from "../../types/types";
-import { server } from "../../redux/store";
+import { RootState, server } from "../../redux/store";
 import Loader from "../../components/Loader";
 
 interface DataType {
@@ -45,9 +44,7 @@ const columns: Column<DataType>[] = [
 ];
 
 const Products = () => {
-  const { user } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  const { user } = useSelector((state: RootState) => state.userReducer);
   const { data, isLoading, isError, error } = useAllProductsQuery(user?._id!);
   const [rows, setRows] = useState<DataType[]>([]);
 

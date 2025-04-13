@@ -2,15 +2,14 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { CartReducerInitialState } from "../types/reducerTypes";
 import axios from "axios";
-import { server } from "../redux/store";
+import { RootState, server } from "../redux/store";
 import toast from "react-hot-toast";
 import { saveShippingInfo } from "../redux/reducer/cartReducer";
 
 const Shipping = () => {
   const { cartItems, total } = useSelector(
-    (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
+    (state: RootState) => state.cartReducer
   );
 
   const navigate = useNavigate();

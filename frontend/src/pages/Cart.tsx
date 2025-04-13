@@ -9,16 +9,13 @@ import {
   calculatePrice,
   removeCartItem,
 } from "../redux/reducer/cartReducer";
-import { CartReducerInitialState } from "../types/reducerTypes";
 import { CartItem } from "../types/types";
 import axios from "axios";
-import { server } from "../redux/store";
+import { RootState, server } from "../redux/store";
 
 const Cart = () => {
   const { cartItems, subTotal, tax, discount, shippingCharges, total } =
-    useSelector(
-      (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
-    );
+    useSelector((state: RootState) => state.cartReducer);
 
   const dispatch = useDispatch();
 

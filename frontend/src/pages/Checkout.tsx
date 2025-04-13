@@ -10,13 +10,10 @@ import toast from "react-hot-toast";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { newOrderRequest } from "../types/apiTypes";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  CartReducerInitialState,
-  UserReducerInitialState,
-} from "../types/reducerTypes";
 import { useNewOrderMutation } from "../redux/api/orderAPI";
 import { resetCart } from "../redux/reducer/cartReducer";
-import { reactToastRes } from "../utils/Features";
+import { reactToastRes } from "../utils/features";
+import { RootState } from "../redux/store";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
@@ -26,9 +23,7 @@ const CheckoutForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const {
     shippingInfo,
@@ -38,9 +33,7 @@ const CheckoutForm = () => {
     discount,
     shippingCharges,
     total,
-  } = useSelector(
-    (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
-  );
+  } = useSelector((state: RootState) => state.cartReducer);
 
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 

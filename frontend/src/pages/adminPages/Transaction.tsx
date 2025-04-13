@@ -4,12 +4,12 @@ import Sidebar from "../../components/adminComponents/Sidebar";
 import { Link } from "react-router-dom";
 import TableHOC from "../../components/adminComponents/TableHOC";
 import { useSelector } from "react-redux";
-import { UserReducerInitialState } from "../../types/reducerTypes";
 import { useAllOrdersQuery } from "../../redux/api/orderAPI";
 import toast from "react-hot-toast";
 import { CustomError } from "../../types/apiTypes";
 import { Order } from "../../types/types";
 import Loader from "../../components/Loader";
+import { RootState } from "../../redux/store";
 
 interface DataType {
   user: string;
@@ -48,9 +48,7 @@ const columns: Column<DataType>[] = [
 ];
 
 const Transaction = () => {
-  const { user } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const { data, isLoading, isError, error } = useAllOrdersQuery(user?._id!);
   const [rows, setRows] = useState<DataType[]>([]);

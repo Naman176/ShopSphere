@@ -2,7 +2,6 @@ import Sidebar from "../../../components/adminComponents/Sidebar";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Order, OrderItem } from "../../../types/types";
 import { useSelector } from "react-redux";
-import { UserReducerInitialState } from "../../../types/reducerTypes";
 import {
   useDeleteOrderMutation,
   useOrderDetailsQuery,
@@ -10,8 +9,8 @@ import {
 } from "../../../redux/api/orderAPI";
 import Loader from "../../../components/Loader";
 import { FaTrash } from "react-icons/fa";
-import { server } from "../../../redux/store";
-import { reactToastRes } from "../../../utils/Features";
+import { RootState, server } from "../../../redux/store";
+import { reactToastRes } from "../../../utils/features";
 
 const initialData: Order = {
   shippingInfo: {
@@ -36,9 +35,7 @@ const initialData: Order = {
 };
 
 const TransactionManagement = () => {
-  const { user } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const params = useParams();
   const navigate = useNavigate();
