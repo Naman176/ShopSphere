@@ -54,3 +54,8 @@ export type processOrderRequest = {
   userId: string;
   orderId: string;
 };
+
+export type deleteUserRequest = {
+  userId: string,
+  adminId: string,
+}
