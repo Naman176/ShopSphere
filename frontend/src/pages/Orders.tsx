@@ -16,7 +16,6 @@ type DataType = {
   quantity: number;
   discount: number;
   status: ReactElement;
-  action: ReactElement;
 };
 
 const columns: Column<DataType>[] = [
@@ -39,10 +38,6 @@ const columns: Column<DataType>[] = [
   {
     Header: "Status",
     accessor: "status",
-  },
-  {
-    Header: "Action",
-    accessor: "action",
   },
 ];
 

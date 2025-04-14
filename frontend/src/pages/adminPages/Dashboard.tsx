@@ -15,9 +15,12 @@ import toast from "react-hot-toast";
 import { CustomError } from "../../types/apiTypes";
 import { Stats } from "../../types/types";
 import Loader from "../../components/Loader";
+import { getLastMonths } from "../../utils/features";
 
 const userImg =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJxA5cTf-5dh5Eusm0puHbvAhOrCRPtckzjA&usqp";
+
+const { last6Months } = getLastMonths();
 
 const Dashboard = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
@@ -76,6 +79,7 @@ const Dashboard = () => {
                 <BarChart
                   data1={stats.chart.revenue}
                   data2={stats.chart.order}
+                  labels={last6Months}
                   title1="Revenue"
                   title2="Transaction"
                   bgColor1="rgb(0,115,255)"
