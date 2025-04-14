@@ -2,7 +2,7 @@ import TableHOC from "../TableHOC";
 import { Column } from "react-table";
 
 interface DataType {
-  id: string;
+  _id: string;
   quantity: number;
   amount: number;
   discount: number;
@@ -12,7 +12,7 @@ interface DataType {
 const columns: Column<DataType>[] = [
   {
     Header: "Id",
-    accessor: "id",
+    accessor: "_id",
   },
   {
     Header: "Quantity",
